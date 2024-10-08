@@ -6,13 +6,17 @@
     --secondary-color: rgb(91, 92, 93);
     --light-transparent: rgba(234, 242, 249, .1);
 
-    --cursor-size: 12vw;
+    --cursor-size: 100px;
+    --cursor-hovering-size: 50px;
+    cursor: none;
+
 }
 
 body {
     font-family: 'DM Sans', sans-serif;
     background-color: var(--primary-color);
-    cursor: none;
+    overflow-x: hidden;
+    color: var(--primary-light);
 }
 
 #cursor {
@@ -26,11 +30,12 @@ body {
     z-index: 10;
 
     transition: all .5s cubic-bezier(0.16, 1, 0.3, 1);
+    pointer-events: none;
 }   
 
 #titlecontainer {
     width: 100%;
-    height: 60vh;
+    height: 90vh;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -41,7 +46,8 @@ body {
     font-weight: 600;
     letter-spacing: .1vw;
 
-    color: var(--primary-light);
+    transition: all .5s cubic-bezier(0.16, 1, 0.3, 1);
+
 }
 
 #descriptioncontainer {
@@ -54,7 +60,6 @@ body {
 }
 
 #description {
-    color: var(--primary-light);
     text-align: center;
     font-size: 2vw;
     letter-spacing: .15vw;
@@ -73,6 +78,51 @@ body {
     transition: all .5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.descriptionhovering {
-    transform: scale(1.05);
+.hoverable {
+    transition: all .5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.hovering {
+    transform: scale(1.3);
+}
+
+#downarrowcontainer {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+#downarrow {
+    stroke: var(--primary-light);
+    padding: 15px;
+}
+
+a {
+    cursor: none;
+}
+
+#applycontainer {
+    height: fit-content;
+    padding: 10vh 30vw;
+}
+
+#applyform {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+    font-size: 2vw;
+}
+
+#applyform > * {
+    padding: 10px;
+    margin: 5px;
+    width: 100%;
+}
+
+#applyform > button {
+    background-color: var(--primary-light);
+    width: 50%;
+    border: none;
+    font-weight: 300;
 }

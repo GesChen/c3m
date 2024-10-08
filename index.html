@@ -14,11 +14,25 @@
             Care3Much
         </div>
     </div>
-    <div id="descriptioncontainer">
+    <div id="downarrowcontainer">
+        <svg id="downarrow" class="hoverable" width="50" height="20" xmlns="http://www.w3.org/2000/svg">
+            <polyline points="2,2 25,18 48,2" fill="none" stroke-width="3" stroke-linecap="round"></polyline>
+        </svg>
+    </div>
+    <div id="applycontainer">
+        <div id="apply">
+            <form id="applyform">
+                <label>instagram / social media handle</label>
+                <input type="text" name="instagram-handle" placeholder="@yourhandle" required="">
+                <label>impact statement</label>
+                <textarea name="impact-statement" rows="5" placeholder="Describe the impact you aim to have as an artist." required=""></textarea>
+                <button type="submit">Apply</button>
+            </form>
+    </div>
+    <!--div id="descriptioncontainer">
         <div id="description">
             An art collective focused on providing funding to a wide array of artists through an ultra-selective application process.
         </div>
-    </div>
-    <div id="apply">todo</div>
+    </div-->
 </body>
 </html>

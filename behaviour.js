@@ -1,15 +1,22 @@
-const smoothness = .9;
+const smoothness = 1;
 const targetFrameRate = 60;
 
 const tiltCoef = 10;
-const tiltShadowOffset = .1;
+const maxTilt = 20;
+const tiltShadowOffset = .5;
 const fadeSteps = 5;
 const blurIncrease =.5;
-const brightnessDecrease = 10;
+const brightnessDecrease = 12;
+
+var cursorHovering = false;
+var curHoverId = "";
 
 window.addEventListener("mousemove", (event)=>{
     cursorX = event.clientX;
     cursorY = event.clientY;
+
+    const computed = window.getComputedStyle(document.documentElement);
+    const secondarycol = computed.getPropertyValue('--secondary-color');
 
     const titlecontainer = document.getElementById("titlecontainer");
     const rect = titlecontainer.getBoundingClientRect();
@@ -25,14 +32,52 @@ window.addEventListener("mousemove", (event)=>{
     
     tiltX = relativeX / tiltCoef;
     tiltY = relativeY / tiltCoef;
+
+    tiltX = Math.min(maxTilt, Math.max(-maxTilt, tiltX));
+    tiltY = Math.min(maxTilt, Math.max(-maxTilt, tiltY));
+
     //const totalTilt = (tiltX + tiltY) / 2;
     
     rotation = rotationToAxisAngle(tiltY, -tiltX);
+    
+    title.style.transform = `rotate3d(${rotation.axis[0]}, ${rotation.axis[1]}, ${rotation.axis[2]}, ${rotation.angle}deg)`;
+    var color = secondarycol;
+    var shadows = "";
+    for (let i = 0; i < fadeSteps; i++) {
+        let offset = tiltShadowOffset * (i + 1);
+        let blur = blurIncrease * i;
+        color = modifyRGB(color, -brightnessDecrease);
+
+        shadows += `${-tiltX * offset}px ${-tiltY * offset}px ${blur}px ${color}`;
+        if (i != fadeSteps - 1)
+            shadows += ',';
+    }
+    title.style.textShadow = shadows;
+
+    var sizetext = computed.getPropertyValue('--cursor-size');
+    if (cursorHovering) sizetext = computed.getPropertyValue('--cursor-hovering-size')
+    var size = sizetext.slice(0, -2);
+
+    const cursor = document.getElementById('cursor');
+    cursor.style.width = `${size}${sizetext.slice(-2)}`;
+    cursor.style.height = `${size}${sizetext.slice(-2)}`;
+    cursor.style.left = `calc(${event.pageX}px - ${size / 2}${sizetext.slice(-2)})`;
+    cursor.style.top  = `calc(${event.pageY}px - ${size / 2}${sizetext.slice(-2)})`;
+});
+
+window.addEventListener("mousedown", (event)=>{
+    if (cursorHovering) {
+        if (curHoverId == "downarrow"){
+            window.scrollTo({
+                top: document.documentElement.scrollHeight,
+                behavior: 'smooth'
+              });
+        }
+    }
 });
 
 window.addEventListener("load", ()=> {
-
-    requestAnimationFrame(newFrame);
+    requestAnimationFrame(nosmooth);
 });
 
 var rotation = { axis: [0, 0, 0], angle: 0 };
@@ -42,12 +87,38 @@ var sTiltX = 0;
 var tiltY = 0;
 var sTiltY = 0;
 
-
 var cursorX = 0;
 var cursorY = 0;
 
 var dt = 0;
 var lastUpdate = Date.now();
+
+function nosmooth() {
+    
+    const computed = window.getComputedStyle(document.documentElement);
+
+    var anyhovering = false;
+    const hoverable = document.getElementsByClassName("hoverable");
+    for (let element of hoverable) {
+        const rect = element.getBoundingClientRect();
+
+        if (cursorX >= rect.left &&
+            cursorX <= rect.right &&
+            cursorY >= rect.top &&
+            cursorY <= rect.bottom ){
+            element.classList.add('hovering');
+            anyhovering = true;
+            curHoverId = element.id;
+        }
+        else {
+            element.classList.remove('hovering');
+        }
+    }
+
+    cursorHovering = anyhovering;
+
+    requestAnimationFrame(nosmooth);
+}
 
 function newFrame() {
     
