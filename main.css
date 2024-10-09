@@ -29,7 +29,7 @@ body {
 
     z-index: 10;
 
-    transition: all .5s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: all .3s cubic-bezier(0.16, 1, 0.3, 1);
     pointer-events: none;
 }   
 
@@ -107,6 +107,7 @@ a {
 }
 
 #applyform {
+    cursor: none;
     display: flex;
     flex-direction: column;
     text-align: center;
@@ -115,6 +116,7 @@ a {
 }
 
 #applyform > * {
+    cursor: none;
     padding: 10px;
     margin: 5px;
     width: 100%;
@@ -129,5 +131,12 @@ a {
     font-weight: 300;
     color: var(--primary-light);
 
-    cursor: pointer;
+    transition: all .5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+#applyform > button:hover {
+    background-color: var(--primary-light);
+
+    border: 1px solid var(--primary-light);
+    color: var(--primary-color);
 }
